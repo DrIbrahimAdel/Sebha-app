@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <title>عداد التسبيح</title>
   <style>
-     body {
+    body {
       margin: 0;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: black;   /* ← هنا خليتها خلفية سوداء بالكامل */
+      background: black;  /* خلفية سوداء بالكامل */
       color: white;
       font-family: Arial, sans-serif;
       overflow: hidden;
@@ -64,11 +64,17 @@
     <div id="total">المجموع: 0</div>
   </div>
 
+  <!-- أصوات التنبيه -->
+  <audio id="sound33" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+  <audio id="sound100" src="https://actions.google.com/sounds/v1/cartoon/wood_twang.ogg" preload="auto"></audio>
+
   <script>
     let counter = 0;
     const countDiv = document.getElementById("count");
     const totalDiv = document.getElementById("total");
     const resetBtn = document.getElementById("resetBtn");
+    const sound33 = document.getElementById("sound33");
+    const sound100 = document.getElementById("sound100");
 
     document.body.addEventListener("click", function(e) {
       if (e.target.id === "resetBtn") return; // استثناء زر إعادة
@@ -81,11 +87,15 @@
       void countDiv.offsetWidth; // إعادة تشغيل الأنيميشن
       countDiv.classList.add("flash");
 
-      // الاهتزاز
+      // الاهتزاز + الصوت
       if (counter % 100 === 0) {
         navigator.vibrate(1000); // اهتزاز أطول
+        sound100.currentTime = 0;
+        sound100.play();
       } else if (counter % 33 === 0) {
         navigator.vibrate(200); // اهتزاز قصير
+        sound33.currentTime = 0;
+        sound33.play();
       }
     });
 

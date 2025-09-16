@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عداد باللمس</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+    .number {
+      position: absolute;
+      color: white;
+      font-size: 32px;
+      font-family: Arial, sans-serif;
+      transform: translate(-50%, -50%);
+      opacity: 1;
+      transition: opacity 1s ease-out;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    let counter = 0;
+
+    document.body.addEventListener("click", function(e) {
+      counter++;
+
+      // إنشاء عنصر الرقم
+      const num = document.createElement("div");
+      num.classList.add("number");
+      num.textContent = counter;
+      num.style.left = e.clientX + "px";
+      num.style.top = e.clientY + "px";
+      document.body.appendChild(num);
+
+      // إخفاء تدريجي
+      setTimeout(() => {
+        num.style.opacity = 0;
+      }, 50);
+
+      // إزالة العنصر بعد ثانية
+      setTimeout(() => {
+        num.remove();
+      }, 1000);
+
+      // الاهتزاز
+      if (navigator.vibrate) {
+        if (counter % 100 === 0) {
+          navigator.vibrate(1000); // اهتزاز طويل عند كل 100
+        } else if (counter % 33 === 0) {
+          navigator.vibrate(200);  // اهتزاز قصير عند كل 33
+        }
+      }
+    });
+  </script>
+</body>
+</html>

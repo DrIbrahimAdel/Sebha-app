@@ -64,8 +64,7 @@
     <div id="total">المجموع: 0</div>
   </div>
 
-  <!-- أصوات التنبيه -->
-  <audio id="sound33" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+  <!-- صوت عند 100 فقط -->
   <audio id="sound100" src="https://actions.google.com/sounds/v1/cartoon/wood_twang.ogg" preload="auto"></audio>
 
   <script>
@@ -73,7 +72,6 @@
     const countDiv = document.getElementById("count");
     const totalDiv = document.getElementById("total");
     const resetBtn = document.getElementById("resetBtn");
-    const sound33 = document.getElementById("sound33");
     const sound100 = document.getElementById("sound100");
 
     document.body.addEventListener("click", function(e) {
@@ -93,9 +91,7 @@
         sound100.currentTime = 0;
         sound100.play();
       } else if (counter % 33 === 0) {
-        navigator.vibrate(200); // اهتزاز قصير
-        sound33.currentTime = 0;
-        sound33.play();
+        navigator.vibrate(200); // اهتزاز قصير فقط
       }
     });
 

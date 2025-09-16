@@ -2,61 +2,97 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>عداد باللمس</title>
+  <title>عداد التسبيح</title>
   <style>
-    body {
+     body {
       margin: 0;
-      background: black;
       height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: black;   /* ← هنا خليتها خلفية سوداء بالكامل */
+      color: white;
+      font-family: Arial, sans-serif;
       overflow: hidden;
       position: relative;
     }
-    .number {
+
+    #count {
+      font-size: 6em;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #total {
+      font-size: 1.5em;
+      color: #aaa;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    #resetBtn {
       position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 5px 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      background: crimson;
       color: white;
-      font-size: 32px;
-      font-family: Arial, sans-serif;
-      transform: translate(-50%, -50%);
-      opacity: 1;
-      transition: opacity 1s ease-out;
-      pointer-events: none;
+      cursor: pointer;
+    }
+
+    #resetBtn:hover {
+      background: darkred;
+    }
+
+    .flash {
+      animation: fadeOut 1s forwards;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.5); }
     }
   </style>
 </head>
 <body>
+  <button id="resetBtn">🔄 إعادة</button>
+  <div>
+    <div id="count">0</div>
+    <div id="total">المجموع: 0</div>
+  </div>
+
   <script>
     let counter = 0;
+    const countDiv = document.getElementById("count");
+    const totalDiv = document.getElementById("total");
+    const resetBtn = document.getElementById("resetBtn");
 
     document.body.addEventListener("click", function(e) {
+      if (e.target.id === "resetBtn") return; // استثناء زر إعادة
       counter++;
+      countDiv.textContent = counter;
+      totalDiv.textContent = "المجموع: " + counter;
 
-      // إنشاء عنصر الرقم
-      const num = document.createElement("div");
-      num.classList.add("number");
-      num.textContent = counter;
-      num.style.left = e.clientX + "px";
-      num.style.top = e.clientY + "px";
-      document.body.appendChild(num);
-
-      // إخفاء تدريجي
-      setTimeout(() => {
-        num.style.opacity = 0;
-      }, 50);
-
-      // إزالة العنصر بعد ثانية
-      setTimeout(() => {
-        num.remove();
-      }, 1000);
+      // تأثير بصري
+      countDiv.classList.remove("flash");
+      void countDiv.offsetWidth; // إعادة تشغيل الأنيميشن
+      countDiv.classList.add("flash");
 
       // الاهتزاز
-      if (navigator.vibrate) {
-        if (counter % 100 === 0) {
-          navigator.vibrate(1000); // اهتزاز طويل عند كل 100
-        } else if (counter % 33 === 0) {
-          navigator.vibrate(200);  // اهتزاز قصير عند كل 33
-        }
+      if (counter % 100 === 0) {
+        navigator.vibrate(1000); // اهتزاز أطول
+      } else if (counter % 33 === 0) {
+        navigator.vibrate(200); // اهتزاز قصير
       }
+    });
+
+    resetBtn.addEventListener("click", function() {
+      counter = 0;
+      countDiv.textContent = "0";
+      totalDiv.textContent = "المجموع: 0";
     });
   </script>
 </body>
